@@ -1,0 +1,28 @@
+<head>
+</head>
+<body>
+    <input id='debounce-input' type='text'>
+    <p>假設使用者輸入文字時會將func放到event queue中(setTimeout)，當使用者在delay時間中再次輸入會透過clearTimeout將event queue清空，
+        也就是取消前一次觸發，並將新的觸發放到event queue中，直到delay時間到，執行在queue中的func
+    </p>
+    <script>
+        const debounce = (func, delay) => {
+        let timerId = null;
+        return function() {
+        let context = this;//指向example的input
+        let args = arguments;//keyup event
+        if (timerId){
+            clearTimeout(timerId);
+        }
+        timerId = setTimeout(function(){
+            func.apply(context,args);
+            timerId = null;
+        }, delay);
+        };
+        }
+        let example = document.getElementById('debounce-input')
+        example.addEventListener('keyup',debounce((e)=>{console.log(e.target.value)
+        },2000)
+        )
+    </script>
+<body> 
